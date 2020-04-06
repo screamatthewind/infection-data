@@ -1,13 +1,33 @@
-<div class="dropdown" mdbDropdown>
+<div class="container">
+    <div class="row">
 
-    <button mdbDropdownToggle mdbBtn color="primary" class="dropdown-toggle waves-light" type="button" mdbWavesEffect>
-        {{ region }}
-    </button>
+        <div class="col-3 dropdown" mdbDropdown>
 
-    <div class="dropdown-menu dropdown-primary">
-        <ng-container *ngFor="let region of regions">
-            <a class="dropdown-item" href="#" (click)="handleRegionSelection($event)" >{{ region }}</a>
-            <div *ngIf="region.indexOf('Taiwan') >= 0" class="divider dropdown-divider"></div> 
-        </ng-container>
+            <button mdbDropdownToggle mdbBtn color="primary" class="dropdown-toggle waves-light" type="button"
+                mdbWavesEffect>
+                {{ region }}
+            </button>
+
+            <div class="dropdown-menu dropdown-primary">
+                <ng-container *ngFor="let region of regions">
+                    <a class="dropdown-item" href="#" (click)="handleRegionSelection($event)">{{ region }}</a>
+                    <div *ngIf="region.indexOf('Taiwan') >= 0" class="divider dropdown-divider"></div>
+                </ng-container>
+            </div>
+        </div>
+
+        <div class="col-2 pt-2">
+            <mdb-date-picker name="StartDate" [inline]="true" [options]="myDatePickerOptions"
+                [placeholder]="'Start Date'" [(ngModel)]="startDate" [locale]="'en'"></mdb-date-picker>
+        </div>
+
+        <div class="col-2 pt-2">
+            <mdb-date-picker name="EndDate" [inline]="true" [options]="myDatePickerOptions" [placeholder]="'End Date'"
+                [(ngModel)]="endDate" [locale]="'en'"></mdb-date-picker>
+        </div>
+
+        <div class="col-2">
+            <button type="button" mdbBtn class="btn btn-primary" (click)='updateScreen()'>Update</button>
+        </div>
     </div>
 </div>

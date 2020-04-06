@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MDBBootstrapModule } from 'angular-bootstrap-md'
+import { MDBBootstrapModule, DatepickerModule, WavesModule, MDBDatePickerComponent } from 'ng-uikit-pro-standard'
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './shared/components/nav-menu/nav-menu.component';
@@ -35,6 +35,8 @@ import { AboutComponent } from './shared/components/about/about.component';
     MDBBootstrapModule.forRoot(),
     FormsModule,
     ReactiveFormsModule,
+    DatepickerModule, 
+    WavesModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'days-to-double', component: DaysToDoubleComponent },
