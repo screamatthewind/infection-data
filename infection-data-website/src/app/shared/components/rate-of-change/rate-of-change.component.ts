@@ -45,6 +45,7 @@ export class RateOfChangeComponent {
     responsive: true
   };
 
+  public chartClicked(e: any): void { }
   public chartHovered(e: any): void { }
 
   baseUrl: string;

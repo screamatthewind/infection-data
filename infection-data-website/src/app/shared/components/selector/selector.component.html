@@ -7,6 +7,7 @@
     <div class="dropdown-menu dropdown-primary">
         <ng-container *ngFor="let region of regions">
             <a class="dropdown-item" href="#" (click)="handleRegionSelection($event)" >{{ region }}</a>
+            <div *ngIf="region.indexOf('Taiwan') >= 0" class="divider dropdown-divider"></div> 
         </ng-container>
     </div>
 </div>
