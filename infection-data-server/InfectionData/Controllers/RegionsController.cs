@@ -74,7 +74,7 @@ namespace InfectionData.Controllers
 
             foreach (string region in tmpRegions)
             {
-                if (!favoriteRegions.Contains(region, StringComparer.OrdinalIgnoreCase) && !region.Equals("datetime"))
+                // if (!favoriteRegions.Contains(region, StringComparer.OrdinalIgnoreCase) && !region.Equals("datetime"))
                     regions.Add(myTI.ToTitleCase(region));
             }
 
