@@ -30,7 +30,6 @@ namespace InfectionData.Controllers
         {
             try
             {
-
                 Helpers.Utils.DownloadRemoteFile(_configuration);
             }
             catch (Exception)
