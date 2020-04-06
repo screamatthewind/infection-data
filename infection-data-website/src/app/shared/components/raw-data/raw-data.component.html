@@ -1,0 +1,31 @@
+<app-selector (regionSelectedEvent)="regionSelectionChanged($event)"></app-selector>
+
+<h1 id="tableLabel">Raw Data</h1>
+
+<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="infections">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Aggregate</th>
+      <th>Aggregate Delta</th>
+      <th>Aggregate Pct Change</th>
+      <th>Aggregate Pct Delta</th>
+      <th>Active</th>
+      <th>Recovered</th>
+      <th>Deaths</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let infection of infections">
+      <td>{{ infection.date }}</td>
+      <td>{{ infection.aggregatedConfirmed }}</td>
+      <td>{{ infection.aggregatedConfirmedDelta }}</td>
+      <td>{{ infection.aggregatedConfirmedPctChange }}</td>
+      <td>{{ infection.aggregatedConfirmedPctDeltaChange }}</td>
+      <td>{{ infection.activeConfirmed }}</td>
+      <td>{{ infection.recovered }}</td>
+      <td>{{ infection.deaths }}</td>
+    </tr>
+  </tbody>
+</table>

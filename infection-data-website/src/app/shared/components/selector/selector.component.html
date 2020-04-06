@@ -1,0 +1,12 @@
+<div class="dropdown" mdbDropdown>
+
+    <button mdbDropdownToggle mdbBtn color="primary" class="dropdown-toggle waves-light" type="button" mdbWavesEffect>
+        {{ region }}
+    </button>
+
+    <div class="dropdown-menu dropdown-primary">
+        <ng-container *ngFor="let region of regions">
+            <a class="dropdown-item" href="#" (click)="handleRegionSelection($event)" >{{ region }}</a>
+        </ng-container>
+    </div>
+</div>
