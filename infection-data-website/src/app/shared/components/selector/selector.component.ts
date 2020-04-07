@@ -1,16 +1,17 @@
-import { Component, Input, Output, EventEmitter, Inject, ViewChild } from '@angular/core';
+import { Component, Input, Output, EventEmitter, Inject, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { MDBDatePickerComponent, IMyOptions, LocaleService } from 'ng-uikit-pro-standard';
+import { DatePipe } from '@angular/common';
+import { IMyOptions, LocaleService } from 'ng-uikit-pro-standard';
 import { SelectionModel } from '../../models/selection.model';
+import { SharedService } from '../../services/shared.service';
 
 @Component({
     selector: 'app-selector',
     templateUrl: './selector.component.html',
 })
 
-export class SelectorComponent {
+export class SelectorComponent implements OnInit {
 
-    @ViewChild('datePicker', { static: true }) datePicker: MDBDatePickerComponent;
     @Output() regionSelectedEvent: EventEmitter<any> = new EventEmitter<any>();
 
     region: string;
@@ -21,7 +22,7 @@ export class SelectorComponent {
     startDate: Date;
     endDate: Date;
 
-    public myDatePickerOptions: IMyOptions =
+    public datePickerOptions: IMyOptions =
         {
             closeAfterSelect: true
         };
@@ -47,7 +48,7 @@ export class SelectorComponent {
         }
     };
 
-    constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private localeService: LocaleService) {
+    constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private localeService: LocaleService, private datepipe: DatePipe, private sharedService: SharedService) {
 
         this.localeService.setLocaleOptions(this.locales);
 
@@ -56,7 +57,17 @@ export class SelectorComponent {
         this.region = 'all';
     }
 
+    message: SelectionModel;
+
     ngOnInit() {
+        this.sharedService.sharedMessage.subscribe(message => {
+            if (message.startDate != undefined)
+                this.startDate = new Date(message.startDate);
+
+            if (message.endDate != undefined)
+                this.endDate = new Date(message.endDate);
+        });
+
         this.http.get<string[]>(this.baseUrl + 'Regions').subscribe(results => {
 
             for (let result of results)
@@ -69,8 +80,8 @@ export class SelectorComponent {
             this.region = storedRegion;
     }
 
-    handleRegionSelection($event: any) {
-
+    handleRegionSelection($event: any) 
+    {
         this.region = $event.target.text;
 
         return false;
@@ -81,8 +92,12 @@ export class SelectorComponent {
         let selection = new SelectionModel();
 
         selection.region = this.region;
-        selection.startDate = this.startDate;
-        selection.endDate = this.endDate;
+        selection.startDate = this.datepipe.transform(this.startDate, 'MM/dd/yyyy');
+        selection.endDate = this.datepipe.transform(this.endDate, 'MM/dd/yyyy');
+
+        localStorage.setItem("region", this.region);
+        sessionStorage.setItem("startDate", selection.startDate);
+        sessionStorage.setItem("endDate", selection.endDate);
 
         this.regionSelectedEvent.emit(selection);
 

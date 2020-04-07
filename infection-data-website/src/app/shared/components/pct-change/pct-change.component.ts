@@ -1,18 +1,20 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { InfectionData } from '../../models/infection-data.model';
 import { Chart } from '../../models/chart.model';
+
+import { SelectionModel } from '../../models/selection.model';
+import { SharedService } from '../../services/shared.service';
 
 @Component({
   selector: 'app-pct-change',
   templateUrl: './pct-change.component.html'
 })
 
-export class PctChangeComponent {
+export class PctChangeComponent implements OnInit {
 
-  regionSelectionChanged(region: any) {
-    console.log('selected region: ' + region);
-    this.loadData(region);
+  regionSelectionChanged(selection: any) {
+    this.loadData(selection);
   }
 
   public chartType: string = 'line';
@@ -26,7 +28,7 @@ export class PctChangeComponent {
       fill: false
     },
     {
-      borderColor: 'rgba(75, 192, 192, .7)',
+      borderColor: 'rgba(75, 192, 0, .7)',
       borderWidth: 2,
       fill: false
     },
@@ -52,24 +54,41 @@ export class PctChangeComponent {
   baseUrl: string;
   http: HttpClient;
 
-  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
+  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string, private sharedService: SharedService) {
 
     this.baseUrl = baseUrl;
     this.http = http;
 
     let storedRegion = localStorage.getItem('region');
-    
+    let selection = new SelectionModel();
+
     if (storedRegion == null)
-      this.loadData('all');
+      selection.region = 'all';
     else
-      this.loadData(storedRegion);
+      selection.region = storedRegion;
+
+    if (sessionStorage.getItem('startDate') != null)
+      selection.startDate = sessionStorage.getItem('startDate');
+
+    if (sessionStorage.getItem('endDate') != null)
+      selection.endDate = sessionStorage.getItem('endDate');
+
+    this.sharedService.nextMessage(selection);
+
+    this.loadData(selection);
+  }
+
+  message: SelectionModel;
+
+  ngOnInit() {
+    this.sharedService.sharedMessage.subscribe(message => this.message = message)
   }
 
   infections: InfectionData[];
 
-  loadData(region: string) {
+  loadData(selection: SelectionModel) {
 
-    this.http.get<InfectionData[]>(this.baseUrl + 'InfectionData?region=' + region).subscribe(result => {
+    this.http.get<InfectionData[]>(this.baseUrl + 'InfectionData?region=' + selection.region + '&pStartDate=' + selection.startDate + '&pEndDate=' + selection.endDate).subscribe(result => {
 
       this.infections = result;
 

@@ -3,7 +3,9 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MDBBootstrapModule, DatepickerModule, WavesModule, MDBDatePickerComponent } from 'ng-uikit-pro-standard'
+import { DatePipe } from '@angular/common';
+
+import { MDBBootstrapModule, DatepickerModule, WavesModule } from 'ng-uikit-pro-standard'
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './shared/components/nav-menu/nav-menu.component';
@@ -16,6 +18,7 @@ import { RawDataComponent } from './shared/components/raw-data/raw-data.componen
 
 import { SelectorComponent } from './shared/components/selector/selector.component';
 import { AboutComponent } from './shared/components/about/about.component';
+import { SharedService } from './shared/services/shared.service';
 
 @NgModule({
   declarations: [
@@ -46,7 +49,7 @@ import { AboutComponent } from './shared/components/about/about.component';
       { path: 'about', component: AboutComponent },
     ])
   ],
-  providers: [],
+  providers: [DatePipe, SharedService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -3,8 +3,7 @@
 
         <div class="col-3 dropdown" mdbDropdown>
 
-            <button mdbDropdownToggle mdbBtn color="primary" class="dropdown-toggle waves-light" type="button"
-                mdbWavesEffect>
+            <button mdbDropdownToggle mdbBtn color="primary" class="dropdown-toggle waves-light" type="button" mdbWavesEffect>
                 {{ region }}
             </button>
 
@@ -17,12 +16,12 @@
         </div>
 
         <div class="col-2 pt-2">
-            <mdb-date-picker name="StartDate" [inline]="true" [options]="myDatePickerOptions"
+            <mdb-date-picker name="StartDate" [inline]="true" [options]="datePickerOptions"
                 [placeholder]="'Start Date'" [(ngModel)]="startDate" [locale]="'en'"></mdb-date-picker>
         </div>
 
         <div class="col-2 pt-2">
-            <mdb-date-picker name="EndDate" [inline]="true" [options]="myDatePickerOptions" [placeholder]="'End Date'"
+            <mdb-date-picker name="EndDate" [inline]="true" [options]="datePickerOptions" [placeholder]="'End Date'"
                 [(ngModel)]="endDate" [locale]="'en'"></mdb-date-picker>
         </div>
 

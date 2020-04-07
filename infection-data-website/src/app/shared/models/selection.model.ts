@@ -1,5 +1,5 @@
 export class SelectionModel {
   region: string;
-  startDate: Date;
-  endDate: Date;
+  startDate: string;
+  endDate: string;
 }
