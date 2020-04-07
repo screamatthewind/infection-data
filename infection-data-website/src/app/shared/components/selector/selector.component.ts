@@ -71,11 +71,8 @@ export class SelectorComponent {
 
     handleRegionSelection($event: any) {
 
-        // localStorage.setItem('region', $event.target.text)
-
         this.region = $event.target.text;
-        // this.regionSelectedEvent.emit(`${$event.target.text}`);
-        
+
         return false;
     }
 

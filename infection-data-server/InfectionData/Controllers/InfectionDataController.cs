@@ -29,10 +29,14 @@ namespace InfectionData.Controllers
         [HttpGet]
         public IEnumerable<Infection> Get(string region, string pStartDate, string pEndDate)
         {
-            DateTime? startDate = null;
+            DateTime startDate = DateTime.MinValue;
+            DateTime endDate = DateTime.MaxValue;
 
             if ((pStartDate != null) && (pStartDate != "null") && (pStartDate != "undefined"))
                 startDate = DateTime.Parse(pStartDate);
+
+            if ((pEndDate != null) && (pEndDate != "null") && (pEndDate != "undefined"))
+                endDate = DateTime.Parse(pEndDate);
 
             Helpers.Utils.DownloadRemoteFile(_configuration);
 
@@ -70,7 +74,7 @@ namespace InfectionData.Controllers
                             if (kvp.Key.Equals("datetime"))
                             {
                                 dateTime = DateTime.Parse(kvp.Value.ToString());
-                                if ((startDate != null) && (dateTime < startDate))
+                                if ((dateTime < startDate) || (dateTime > endDate))
                                     skipData = true;
                                 else
                                     skipData = false;
@@ -123,7 +127,7 @@ namespace InfectionData.Controllers
                             {
                                 dateTime = DateTime.Parse(dict["datetime"].ToString());
 
-                                if ((startDate == null) || ((startDate != null) && (dateTime >= startDate)))
+                                if ((dateTime >= startDate) && (dateTime <= endDate))
                                 {
                                     int.TryParse(data[0], out safeInt);
                                     int AggregatedConfirmed = safeInt;
