@@ -87,23 +87,19 @@ namespace InfectionData.Controllers
                     }
                     else
                     {
-                        dict = (IDictionary<string, object>)record;
-
-                        //if (dict.ContainsKey("us"))
-                        //    region = "us";
-
-                        //else if (dict.ContainsKey("united states"))
-                        //    region = "united states";
-
-                        //else region = "delaware";
-
+                        dict = (IDictionary<string, object>) record;
                         region = region.ToLower();
 
-                        data = dict[region].ToString().Split("-");
-
+                        try
+                        {
+                            data = dict[region].ToString().Split("-");
+                        }
+                        catch (Exception)
+                        {
+                        }
                     }
 
-                    if (data.Count() == 4)
+                    if ((data != null) && (data.Count() == 4))
                     {
                         int aggregatedConfirmed = int.Parse(data[0]);
 

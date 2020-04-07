@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter, Inject, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MDBDatePickerComponent, IMyOptions, LocaleService } from 'ng-uikit-pro-standard';
+import { SelectionModel } from '../../models/selection.model';
 
 @Component({
     selector: 'app-selector',
@@ -80,6 +81,12 @@ export class SelectorComponent {
 
     updateScreen()
     {
-        this.regionSelectedEvent.emit(this.region);
+        let selection = new SelectionModel();
+
+        selection.region = this.region;
+        selection.startDate = this.startDate;
+        selection.endDate = this.endDate;
+
+        this.regionSelectedEvent.emit(selection);
     }
 }

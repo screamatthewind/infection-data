@@ -2,6 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { InfectionData } from '../../models/infection-data.model';
 import { Chart } from '../../models/chart.model';
+import { SelectionModel } from '../../models/selection.model';
 
 @Component({
   selector: 'app-home',
@@ -9,9 +10,8 @@ import { Chart } from '../../models/chart.model';
 })
 export class HomeComponent {
 
-  regionSelectionChanged(region: any) {
-    console.log('selected region: ' + region);
-    this.loadData(region);
+  regionSelectionChanged(selection: any) {
+    this.loadData(selection);
   }
 
   public chartType: string = 'line';
@@ -57,18 +57,21 @@ export class HomeComponent {
     this.http = http;
 
     let storedRegion = localStorage.getItem('region');
-    
+    let selection = new SelectionModel();
+
     if (storedRegion == null)
-      this.loadData('all');
+      selection.region = 'all';
     else
-      this.loadData(storedRegion);
+      selection.region = storedRegion;
+
+    this.loadData(selection);
   }
 
   infections: InfectionData[];
 
-  loadData(region: string) {
+  loadData(selection: SelectionModel) {
 
-    this.http.get<InfectionData[]>(this.baseUrl + 'InfectionData?region=' + region).subscribe(result => {
+    this.http.get<InfectionData[]>(this.baseUrl + 'InfectionData?region=' + selection.region + '&startDate=' + selection.startDate + '&endDate=' + selection.endDate).subscribe(result => {
 
       this.infections = result;
 

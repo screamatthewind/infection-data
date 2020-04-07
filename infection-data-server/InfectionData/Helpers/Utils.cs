@@ -35,7 +35,7 @@ namespace InfectionData.Helpers
             using (StreamWriter outputFile = new StreamWriter(destFilename))
                 outputFile.WriteLine(fileContents);
 
-            Debug.WriteLine("S3 File: " + keyFilename + " copied to local: " + keyFilename);
+            Console.WriteLine("S3 File: " + keyFilename + " copied to local: " + keyFilename);
         }
 
         public static void S3WriteFile(string destFilename, string keyFilename, IConfiguration configuration)
@@ -55,7 +55,7 @@ namespace InfectionData.Helpers
 
             utility.Upload(request);
 
-            Debug.WriteLine("Wrote file: " + destFilename + " to bucket: " + s3_bucket_name);
+            Console.WriteLine("Wrote file: " + destFilename + " to bucket: " + s3_bucket_name);
         }
 
         public static string S3ReadFile(string filename, IConfiguration configuration)
@@ -75,9 +75,9 @@ namespace InfectionData.Helpers
             using (GetObjectResponse response = client.GetObjectAsync(request).Result)
             using (Stream responseStream = response.ResponseStream)
             using (StreamReader reader = new StreamReader(responseStream))
-                responseBody = reader.ReadToEnd(); 
+                responseBody = reader.ReadToEnd();
 
-            Debug.WriteLine("Read file: " + filename + " from bucket: " + s3_bucket_name);
+            Console.WriteLine("Read file: " + filename + " from bucket: " + s3_bucket_name);
 
             return responseBody;
         }
@@ -97,13 +97,13 @@ namespace InfectionData.Helpers
                 };
 
                 GetObjectMetadataResponse response = client.GetObjectMetadataAsync(request).Result;
-                Debug.WriteLine("File: " + filename + " exists in S3 - last modified: " + response.LastModified);
+                Console.WriteLine("File: " + filename + " exists in S3 - last modified: " + response.LastModified);
 
                 return response.LastModified;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                Debug.WriteLine("File: " + filename + " not found in S3");
+                Console.WriteLine("File: " + filename + " not found in S3");
                 return null;
             }
         }
@@ -124,14 +124,14 @@ namespace InfectionData.Helpers
 
                     if (DateTime.Now.Date.ToString("d") == lastmodified.Date.ToString("d"))
                     {
-                        Debug.WriteLine("Found file in local cache: " + destFilename);
+                        Console.WriteLine("Found file in local cache: " + destFilename);
                         return;
                     }
 
-                    Debug.WriteLine("Found an old file in local cache: " + destFilename);
+                    Console.WriteLine("Found an old file in local cache: " + destFilename);
                 }
                 else
-                    Debug.WriteLine("File not found in local cache: " + destFilename);
+                    Console.WriteLine("File not found in local cache: " + destFilename);
 
                 if (S3FileExists(keyFilename, configuration) != null)
                 {
@@ -139,14 +139,14 @@ namespace InfectionData.Helpers
                     if (DateTime.Now.Date.ToString("d") == fileDate.Date.ToString("d"))
                     {
                         S3CopyFileToLocal(keyFilename, destFilename, configuration);
-                        Debug.WriteLine("Found file in S3 cache: " + keyFilename + " copied to local cache: " + destFilename);
+                        Console.WriteLine("Found file in S3 cache: " + keyFilename + " copied to local cache: " + destFilename);
                         return;
                     }
                     else
-                        Debug.WriteLine("Found an old file in s3 cache: " + keyFilename);
+                        Console.WriteLine("Found an old file in s3 cache: " + keyFilename);
                 }
                 else
-                    Debug.WriteLine("File: " + keyFilename +" not found in S3");
+                    Console.WriteLine("File: " + keyFilename +" not found in S3");
 
                 HttpClient client = new HttpClient();
 
@@ -162,9 +162,9 @@ namespace InfectionData.Helpers
 
             }
 
-            catch (HttpRequestException rex)
+            catch (HttpRequestException ex)
             {
-                Console.WriteLine(rex.ToString());
+                Console.WriteLine(ex.ToString());
             }
             catch (Exception ex)
             {
