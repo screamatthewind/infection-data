@@ -1,9 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { InfectionData } from '../../models/infection-data.model';
+import { InfectionData } from '../../shared/models/infection-data.model';
 import { HttpClient } from '@angular/common/http';
 
-import { SelectionModel } from '../../models/selection.model';
-import { SharedService } from '../../services/shared.service';
+import { SelectionModel } from '../../shared/models/selection.model';
+import { SharedService } from '../../shared/services/shared.service';
 
 @Component({
   selector: 'app-raw-data',

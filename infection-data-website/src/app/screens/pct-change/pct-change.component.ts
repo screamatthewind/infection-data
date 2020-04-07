@@ -1,17 +1,18 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { InfectionData } from '../../models/infection-data.model';
-import { Chart } from '../../models/chart.model';
+import { InfectionData } from '../../shared/models/infection-data.model';
+import { Chart } from '../../shared/models/chart.model';
 
-import { SelectionModel } from '../../models/selection.model';
-import { SharedService } from '../../services/shared.service';
+import { SelectionModel } from '../../shared/models/selection.model';
+import { SharedService } from '../../shared/services/shared.service';
 
 @Component({
-  selector: 'app-rate-of-change',
-  templateUrl: './rate-of-change.component.html'
+  selector: 'app-pct-change',
+  templateUrl: './pct-change.component.html'
 })
-export class RateOfChangeComponent implements OnInit {
-  
+
+export class PctChangeComponent implements OnInit {
+
   regionSelectionChanged(selection: any) {
     this.loadData(selection);
   }
@@ -73,6 +74,7 @@ export class RateOfChangeComponent implements OnInit {
       selection.endDate = sessionStorage.getItem('endDate');
 
     this.sharedService.nextMessage(selection);
+
     this.loadData(selection);
   }
 
@@ -107,10 +109,10 @@ export class RateOfChangeComponent implements OnInit {
 
         this.chartLabels.push(infection.date);
 
-        objAggregatedConfirmed.data.push(infection.aggregatedConfirmedPctDeltaChange);
-        objActiveConfirmed.data.push(infection.activeConfirmedPctDeltaChange);
-        objRecovered.data.push(infection.recoveredPctDeltaChange);
-        objDeaths.data.push(infection.deathsPctDeltaChange);
+        objAggregatedConfirmed.data.push(infection.aggregatedConfirmedPctChange);
+        objActiveConfirmed.data.push(infection.activeConfirmedPctChange);
+        objRecovered.data.push(infection.recoveredPctChange);
+        objDeaths.data.push(infection.deathsPctChange);
 
         if (infection.aggregatedConfirmedDaysToDouble)
           objAggregatedConfirmed.pointRadius.push(6);
@@ -139,5 +141,7 @@ export class RateOfChangeComponent implements OnInit {
       this.chartDatasets.push(objDeaths);
 
     }, error => console.error(error));
+
   }
 }
+

@@ -1,17 +1,17 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { InfectionData } from '../../models/infection-data.model';
-import { Chart } from '../../models/chart.model';
+import { InfectionData } from '../../shared/models/infection-data.model';
+import { Chart } from '../../shared/models/chart.model';
 
-import { SelectionModel } from '../../models/selection.model';
-import { SharedService } from '../../services/shared.service';
+import { SelectionModel } from '../../shared/models/selection.model';
+import { SharedService } from '../../shared/services/shared.service';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html'
+  selector: 'app-rate-of-change',
+  templateUrl: './rate-of-change.component.html'
 })
-export class HomeComponent implements OnInit {
-
+export class RateOfChangeComponent implements OnInit {
+  
   regionSelectionChanged(selection: any) {
     this.loadData(selection);
   }
@@ -73,7 +73,6 @@ export class HomeComponent implements OnInit {
       selection.endDate = sessionStorage.getItem('endDate');
 
     this.sharedService.nextMessage(selection);
-
     this.loadData(selection);
   }
 
@@ -108,10 +107,10 @@ export class HomeComponent implements OnInit {
 
         this.chartLabels.push(infection.date);
 
-        objAggregatedConfirmed.data.push(infection.aggregatedConfirmed);
-        objActiveConfirmed.data.push(infection.activeConfirmed);
-        objRecovered.data.push(infection.recovered);
-        objDeaths.data.push(infection.deaths);
+        objAggregatedConfirmed.data.push(infection.aggregatedConfirmedPctDeltaChange);
+        objActiveConfirmed.data.push(infection.activeConfirmedPctDeltaChange);
+        objRecovered.data.push(infection.recoveredPctDeltaChange);
+        objDeaths.data.push(infection.deathsPctDeltaChange);
 
         if (infection.aggregatedConfirmedDaysToDouble)
           objAggregatedConfirmed.pointRadius.push(6);
@@ -140,6 +139,5 @@ export class HomeComponent implements OnInit {
       this.chartDatasets.push(objDeaths);
 
     }, error => console.error(error));
-
   }
 }

@@ -10,14 +10,14 @@ import { MDBBootstrapModule, DatepickerModule, WavesModule } from 'ng-uikit-pro-
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './shared/components/nav-menu/nav-menu.component';
 
-import { HomeComponent } from './shared/components/home/home.component';
-import { DaysToDoubleComponent } from './shared/components/days-to-double/days-to-double.component';
-import { PctChangeComponent } from './shared/components/pct-change/pct-change.component';
-import { RateOfChangeComponent } from './shared/components/rate-of-change/rate-of-change.component';
-import { RawDataComponent } from './shared/components/raw-data/raw-data.component';
+import { HomeComponent } from './screens/home/home.component';
+import { DaysToDoubleComponent } from './screens/days-to-double/days-to-double.component';
+import { PctChangeComponent } from './screens/pct-change/pct-change.component';
+import { RateOfChangeComponent } from './screens/rate-of-change/rate-of-change.component';
+import { RawDataComponent } from './screens/raw-data/raw-data.component';
 
 import { SelectorComponent } from './shared/components/selector/selector.component';
-import { AboutComponent } from './shared/components/about/about.component';
+import { AboutComponent } from './screens/about/about.component';
 import { SharedService } from './shared/services/shared.service';
 
 @NgModule({
