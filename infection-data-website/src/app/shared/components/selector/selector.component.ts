@@ -61,10 +61,10 @@ export class SelectorComponent implements OnInit {
 
     ngOnInit() {
         this.sharedService.sharedMessage.subscribe(message => {
-            if (message.startDate != undefined)
+            if ((message.startDate != undefined) && (message.startDate != "undefined"))
                 this.startDate = new Date(message.startDate);
 
-            if (message.endDate != undefined)
+            if ((message.endDate != undefined) && (message.endDate != "undefined"))
                 this.endDate = new Date(message.endDate);
         });
 
@@ -92,8 +92,12 @@ export class SelectorComponent implements OnInit {
         let selection = new SelectionModel();
 
         selection.region = this.region;
-        selection.startDate = this.datepipe.transform(this.startDate, 'MM/dd/yyyy');
-        selection.endDate = this.datepipe.transform(this.endDate, 'MM/dd/yyyy');
+
+        if (this.startDate != undefined)
+            selection.startDate = this.datepipe.transform(this.startDate, 'MM/dd/yyyy');
+
+        if (this.endDate != undefined)
+            selection.endDate = this.datepipe.transform(this.endDate, 'MM/dd/yyyy');
 
         localStorage.setItem("region", this.region);
         sessionStorage.setItem("startDate", selection.startDate);
