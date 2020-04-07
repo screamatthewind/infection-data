@@ -71,7 +71,7 @@ export class HomeComponent {
 
   loadData(selection: SelectionModel) {
 
-    this.http.get<InfectionData[]>(this.baseUrl + 'InfectionData?region=' + selection.region + '&startDate=' + selection.startDate + '&endDate=' + selection.endDate).subscribe(result => {
+    this.http.get<InfectionData[]>(this.baseUrl + 'InfectionData?region=' + selection.region + '&pStartDate=' + selection.startDate + '&pEndDate=' + selection.endDate).subscribe(result => {
 
       this.infections = result;
 

@@ -27,7 +27,7 @@ namespace InfectionData.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Infection> Get(string region)
+        public IEnumerable<Infection> Get(string region, string pStartDate, string pEndDate)
         {
             Helpers.Utils.DownloadRemoteFile(_configuration);
 
@@ -62,7 +62,9 @@ namespace InfectionData.Controllers
                             // Debug.WriteLine(kvp.Key + ": " + kvp.Value);
 
                             if (kvp.Key.Equals("datetime"))
+                            {
                                 dateTime = DateTime.Parse(kvp.Value.ToString());
+                            }
 
                             else
                             {
@@ -120,14 +122,21 @@ namespace InfectionData.Controllers
 
                                 int ActiveConfirmed = AggregatedConfirmed - (Recovered + Deaths);
 
-                                infections.Add(new Infection
+
+                                if (pStartDate != "undefined")
                                 {
-                                    Date = dateTime.Date.ToString("d"),
-                                    AggregatedConfirmed = AggregatedConfirmed,
-                                    ActiveConfirmed = ActiveConfirmed,
-                                    Recovered = Recovered,
-                                    Deaths = Deaths
-                                });
+                                    if (dateTime >= DateTime.Parse(pStartDate))
+                                    {
+                                        infections.Add(new Infection
+                                        {
+                                            Date = dateTime.Date.ToString("d"),
+                                            AggregatedConfirmed = AggregatedConfirmed,
+                                            ActiveConfirmed = ActiveConfirmed,
+                                            Recovered = Recovered,
+                                            Deaths = Deaths
+                                        });
+                                    }
+                                }
                             }
                         }
                     }
@@ -139,18 +148,23 @@ namespace InfectionData.Controllers
 
                         if (SumActiveConfirmed > 0)
                         {
-
-                            infections.Add(new Infection
+                            if (pStartDate != "undefined")
                             {
-                                Date = dateTime.Date.ToString("d"),
-                                AggregatedConfirmed = SumAggregatedConfirmed,
-                                ActiveConfirmed = SumActiveConfirmed,
-                                Recovered = SumRecovered,
-                                Deaths = SumDeaths
-                            });
-                        }
+                                if (dateTime >= DateTime.Parse(pStartDate))
+                                {
+                                    infections.Add(new Infection
+                                    {
+                                        Date = dateTime.Date.ToString("d"),
+                                        AggregatedConfirmed = SumAggregatedConfirmed,
+                                        ActiveConfirmed = SumActiveConfirmed,
+                                        Recovered = SumRecovered,
+                                        Deaths = SumDeaths
+                                    });
 
-                        Debug.WriteLine(SumAggregatedConfirmed + "-" + SumActiveConfirmed + "-" + SumRecovered + "-" + SumDeaths);
+                                    Debug.WriteLine(SumAggregatedConfirmed + "-" + SumActiveConfirmed + "-" + SumRecovered + "-" + SumDeaths);
+                                }
+                            }
+                        }
 
                         SumAggregatedConfirmed = 0;
                         SumActiveConfirmed = 0;
