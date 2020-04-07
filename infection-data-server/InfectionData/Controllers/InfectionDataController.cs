@@ -29,6 +29,11 @@ namespace InfectionData.Controllers
         [HttpGet]
         public IEnumerable<Infection> Get(string region, string pStartDate, string pEndDate)
         {
+            DateTime? startDate = null;
+
+            if ((pStartDate != null) && (pStartDate != "null") && (pStartDate != "undefined"))
+                startDate = DateTime.Parse(pStartDate);
+
             Helpers.Utils.DownloadRemoteFile(_configuration);
 
             List<Infection> infections = new List<Infection>();
@@ -57,35 +62,42 @@ namespace InfectionData.Controllers
 
                     if (region.ToLower().Equals("all"))
                     {
+                        // calculate global data
+                        Boolean skipData = false;
+
                         foreach (KeyValuePair<string, object> kvp in record)
                         {
-                            // Debug.WriteLine(kvp.Key + ": " + kvp.Value);
-
                             if (kvp.Key.Equals("datetime"))
                             {
                                 dateTime = DateTime.Parse(kvp.Value.ToString());
+                                if ((startDate != null) && (dateTime < startDate))
+                                    skipData = true;
+                                else
+                                    skipData = false;
                             }
 
                             else
                             {
-                                if (!kvp.Key.Equals("us") && !kvp.Key.Equals("united states"))
+                                if (!skipData)
                                 {
-                                    data = kvp.Value.ToString().Split("-");
-                                    if (data.Count() == 4)
+                                    if (!kvp.Key.Equals("us") && !kvp.Key.Equals("united states"))
                                     {
-                                        int.TryParse(data[0], out safeInt);
-                                        SumAggregatedConfirmed += safeInt;
+                                        data = kvp.Value.ToString().Split("-");
+                                        if (data.Count() == 4)
+                                        {
+                                            int.TryParse(data[0], out safeInt);
+                                            SumAggregatedConfirmed += safeInt;
 
-                                        int.TryParse(data[2], out safeInt);
-                                        SumRecovered += safeInt;
+                                            int.TryParse(data[2], out safeInt);
+                                            SumRecovered += safeInt;
 
-                                        int.TryParse(data[3], out safeInt);
-                                        SumDeaths += safeInt;
+                                            int.TryParse(data[3], out safeInt);
+                                            SumDeaths += safeInt;
+                                        }
                                     }
                                 }
                             }
                         }
-
                     }
                     else
                     {
@@ -111,33 +123,34 @@ namespace InfectionData.Controllers
                             {
                                 dateTime = DateTime.Parse(dict["datetime"].ToString());
 
-                                int.TryParse(data[0], out safeInt);
-                                int AggregatedConfirmed = safeInt;
-
-                                int.TryParse(data[2], out safeInt);
-                                int Recovered = safeInt;
-
-                                int.TryParse(data[3], out safeInt);
-                                int Deaths = safeInt;
-
-                                int ActiveConfirmed = AggregatedConfirmed - (Recovered + Deaths);
-
-
-                                infections.Add(new Infection
+                                if ((startDate == null) || ((startDate != null) && (dateTime >= startDate)))
                                 {
-                                    Date = dateTime.Date.ToString("d"),
-                                    AggregatedConfirmed = AggregatedConfirmed,
-                                    ActiveConfirmed = ActiveConfirmed,
-                                    Recovered = Recovered,
-                                    Deaths = Deaths
-                                });
+                                    int.TryParse(data[0], out safeInt);
+                                    int AggregatedConfirmed = safeInt;
+
+                                    int.TryParse(data[2], out safeInt);
+                                    int Recovered = safeInt;
+
+                                    int.TryParse(data[3], out safeInt);
+                                    int Deaths = safeInt;
+
+                                    int ActiveConfirmed = AggregatedConfirmed - (Recovered + Deaths);
+
+                                    infections.Add(new Infection
+                                    {
+                                        Date = dateTime.Date.ToString("d"),
+                                        AggregatedConfirmed = AggregatedConfirmed,
+                                        ActiveConfirmed = ActiveConfirmed,
+                                        Recovered = Recovered,
+                                        Deaths = Deaths
+                                    });
+                                }
                             }
                         }
                     }
 
                     if (region.ToLower().Equals("all"))
                     {
-
                         SumActiveConfirmed = SumAggregatedConfirmed - (SumRecovered + SumDeaths);
 
                         if (SumActiveConfirmed > 0)
