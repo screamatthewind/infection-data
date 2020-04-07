@@ -89,7 +89,7 @@ namespace InfectionData.Controllers
                     }
                     else
                     {
-                        dict = (IDictionary<string, object>) record;
+                        dict = (IDictionary<string, object>)record;
                         region = region.ToLower();
 
                         try
@@ -123,20 +123,14 @@ namespace InfectionData.Controllers
                                 int ActiveConfirmed = AggregatedConfirmed - (Recovered + Deaths);
 
 
-                                if (pStartDate != "undefined")
+                                infections.Add(new Infection
                                 {
-                                    if (dateTime >= DateTime.Parse(pStartDate))
-                                    {
-                                        infections.Add(new Infection
-                                        {
-                                            Date = dateTime.Date.ToString("d"),
-                                            AggregatedConfirmed = AggregatedConfirmed,
-                                            ActiveConfirmed = ActiveConfirmed,
-                                            Recovered = Recovered,
-                                            Deaths = Deaths
-                                        });
-                                    }
-                                }
+                                    Date = dateTime.Date.ToString("d"),
+                                    AggregatedConfirmed = AggregatedConfirmed,
+                                    ActiveConfirmed = ActiveConfirmed,
+                                    Recovered = Recovered,
+                                    Deaths = Deaths
+                                });
                             }
                         }
                     }
@@ -148,22 +142,16 @@ namespace InfectionData.Controllers
 
                         if (SumActiveConfirmed > 0)
                         {
-                            if (pStartDate != "undefined")
+                            infections.Add(new Infection
                             {
-                                if (dateTime >= DateTime.Parse(pStartDate))
-                                {
-                                    infections.Add(new Infection
-                                    {
-                                        Date = dateTime.Date.ToString("d"),
-                                        AggregatedConfirmed = SumAggregatedConfirmed,
-                                        ActiveConfirmed = SumActiveConfirmed,
-                                        Recovered = SumRecovered,
-                                        Deaths = SumDeaths
-                                    });
+                                Date = dateTime.Date.ToString("d"),
+                                AggregatedConfirmed = SumAggregatedConfirmed,
+                                ActiveConfirmed = SumActiveConfirmed,
+                                Recovered = SumRecovered,
+                                Deaths = SumDeaths
+                            });
 
-                                    Debug.WriteLine(SumAggregatedConfirmed + "-" + SumActiveConfirmed + "-" + SumRecovered + "-" + SumDeaths);
-                                }
-                            }
+                            Debug.WriteLine(SumAggregatedConfirmed + "-" + SumActiveConfirmed + "-" + SumRecovered + "-" + SumDeaths);
                         }
 
                         SumAggregatedConfirmed = 0;
@@ -174,6 +162,14 @@ namespace InfectionData.Controllers
                 }
             }
 
+            updateDeltas(infections);
+            updateDaysToDouble(infections);
+
+            return infections.ToArray();
+        }
+
+        private void updateDeltas(List<Infection> infections)
+        {
             int ctr = 0;
             Infection priorInfection = null;
 
@@ -248,7 +244,10 @@ namespace InfectionData.Controllers
 
                 ctr++;
             }
+        }
 
+        private void updateDaysToDouble(List<Infection> infections)
+        {
             int runningTotalAggregatedConfirmed = 0;
             int priorAggregatedConfirmedDoubleAmount = 0;
             int aggregatedConfirmedDaysToDouble = 0;
@@ -328,8 +327,6 @@ namespace InfectionData.Controllers
                 else
                     deathsDaysToDouble += 1;
             }
-
-            return infections.ToArray();
         }
     }
 }

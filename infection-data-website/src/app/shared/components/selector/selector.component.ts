@@ -71,10 +71,10 @@ export class SelectorComponent {
 
     handleRegionSelection($event: any) {
 
-        localStorage.setItem('region', $event.target.text)
+        // localStorage.setItem('region', $event.target.text)
 
         this.region = $event.target.text;
-        this.regionSelectedEvent.emit(`${$event.target.text}`);
+        // this.regionSelectedEvent.emit(`${$event.target.text}`);
         
         return false;
     }
@@ -88,5 +88,7 @@ export class SelectorComponent {
         selection.endDate = this.endDate;
 
         this.regionSelectedEvent.emit(selection);
+
+        return false;
     }
 }

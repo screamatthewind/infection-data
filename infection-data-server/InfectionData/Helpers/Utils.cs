@@ -104,6 +104,7 @@ namespace InfectionData.Helpers
             catch (Exception ex)
             {
                 Console.WriteLine("File: " + filename + " not found in S3");
+                Console.WriteLine(ex.ToString());
                 return null;
             }
         }
@@ -133,10 +134,10 @@ namespace InfectionData.Helpers
                 else
                     Console.WriteLine("File not found in local cache: " + destFilename);
 
-                if (S3FileExists(keyFilename, configuration) != null)
+                DateTime? keyFileDateTime = S3FileExists(keyFilename, configuration);
+                if (keyFileDateTime != null)
                 {
-                    DateTime fileDate = (DateTime)S3FileExists(keyFilename, configuration);
-                    if (DateTime.Now.Date.ToString("d") == fileDate.Date.ToString("d"))
+                    if (DateTime.Now.Date.ToString("d") == ((DateTime) keyFileDateTime).Date.ToString("d"))
                     {
                         S3CopyFileToLocal(keyFilename, destFilename, configuration);
                         Console.WriteLine("Found file in S3 cache: " + keyFilename + " copied to local cache: " + destFilename);
