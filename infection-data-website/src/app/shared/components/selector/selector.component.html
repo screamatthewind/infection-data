@@ -17,16 +17,16 @@
 
         <div class="pt-1 pl-2">
             <mdb-date-picker name="StartDate" [inline]="true" [options]="datePickerOptions"
-                [placeholder]="'Start Date'" [(ngModel)]="startDate" [locale]="'en'"></mdb-date-picker>
+                [placeholder]="'Start Date'" [(ngModel)]="startDate" (ngModelChange)="datePickerChanged()" [locale]="'en'"></mdb-date-picker>
         </div>
 
         <div class="pt-1 pl-2">
             <mdb-date-picker name="EndDate" [inline]="true" [options]="datePickerOptions" [placeholder]="'End Date'"
-                [(ngModel)]="endDate" [locale]="'en'"></mdb-date-picker>
+                [(ngModel)]="endDate" (ngModelChange)="datePickerChanged()" [locale]="'en'"></mdb-date-picker>
         </div>
 
         <div class="pl-2">
-            <button type="button" mdbBtn class="btn btn-primary btn-md" (click)='updateScreen()'>Update</button>
+            <button type="button" mdbBtn class="btn btn-primary btn-md animated" [class.lightSpeedIn]="showUpdateButton" [class.flipOutX]="!showUpdateButton" (click)='updateScreen()'>Update</button>
         </div>
     </div>
 </div>

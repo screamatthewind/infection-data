@@ -83,12 +83,22 @@ export class SelectorComponent implements OnInit {
     handleRegionSelection($event: any) 
     {
         this.region = $event.target.text;
+        this.showUpdateButton = true;
 
         return false;
     }
 
+    showUpdateButton: Boolean = false;
+
+    datePickerChanged()
+    {
+        this.showUpdateButton = true;
+    }
+
     updateScreen()
     {
+        this.showUpdateButton = false;
+
         let selection = new SelectionModel();
 
         selection.region = this.region;
