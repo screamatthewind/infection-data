@@ -1,7 +1,7 @@
-import { Component, Input, Output, EventEmitter, Inject, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, Inject, OnInit, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
-import { IMyOptions, LocaleService } from 'ng-uikit-pro-standard';
+import { IMyOptions, LocaleService, MDBDatePickerComponent } from 'ng-uikit-pro-standard';
 import { SelectionModel } from '../../models/selection.model';
 import { SharedService } from '../../services/shared.service';
 
@@ -12,6 +12,8 @@ import { SharedService } from '../../services/shared.service';
 
 export class SelectorComponent implements OnInit {
 
+    @ViewChild("startDatePicker") startDatePicker: MDBDatePickerComponent;
+    @ViewChild("endDatePicker") endDatePicker: MDBDatePickerComponent;
     @Output() regionSelectedEvent: EventEmitter<any> = new EventEmitter<any>();
 
     region: string;
@@ -116,5 +118,18 @@ export class SelectorComponent implements OnInit {
         this.regionSelectedEvent.emit(selection);
 
         return false;
+    }
+
+    resetSelection()
+    {
+        this.showUpdateButton = false;
+        this.region = 'all';
+        this.startDate = null;
+        this.endDate = null;
+
+        this.startDatePicker.clearDate();
+        this.endDatePicker.clearDate();
+
+        this.updateScreen();
     }
 }
