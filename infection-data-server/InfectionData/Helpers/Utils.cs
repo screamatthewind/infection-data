@@ -104,7 +104,7 @@ namespace InfectionData.Helpers
             catch (Exception ex)
             {
                 Console.WriteLine("File: " + filename + " not found in S3");
-                Console.WriteLine(ex.ToString());
+                // Console.WriteLine(ex.ToString());
                 return null;
             }
         }
@@ -137,6 +137,7 @@ namespace InfectionData.Helpers
                 DateTime? keyFileDateTime = S3FileExists(keyFilename, configuration);
                 if (keyFileDateTime != null)
                 {
+                    
                     if (DateTime.Now.Date.ToString("d") == ((DateTime) keyFileDateTime).Date.ToString("d"))
                     {
                         S3CopyFileToLocal(keyFilename, destFilename, configuration);
@@ -150,6 +151,8 @@ namespace InfectionData.Helpers
                     Console.WriteLine("File: " + keyFilename +" not found in S3");
 
                 HttpClient client = new HttpClient();
+
+                Console.WriteLine("Downloading file from source: " + keyFilename);
 
                 HttpResponseMessage response = client.GetAsync("http://hgis.uw.edu/virus/assets/virus.csv").Result;
                 response.EnsureSuccessStatusCode();
