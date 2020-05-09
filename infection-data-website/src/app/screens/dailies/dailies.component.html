@@ -1,0 +1,11 @@
+<app-selector (regionSelectedEvent)="regionSelectionChanged($event)"></app-selector>
+
+<h1 id="tableLabel">Dailies (7-Day Moving Average)</h1>
+
+<p *ngIf="!infections"><em>Loading...</em></p>
+
+<div style="display: block" *ngIf="infections">
+  <canvas mdbChart [chartType]="chartType" [datasets]="chartDatasets" [labels]="chartLabels" [colors]="chartColors"
+    [options]="chartOptions" [legend]="true" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
+  </canvas>
+</div>

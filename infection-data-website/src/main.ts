@@ -5,8 +5,8 @@ import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 
 export function getBaseUrl() {
-  return 'https://t7ecxdbiil.execute-api.us-east-1.amazonaws.com/Prod/';
-// return 'https://localhost:44307/';
+//  return 'https://t7ecxdbiil.execute-api.us-east-1.amazonaws.com/Prod/';
+ return 'https://localhost:44307/';
 }
 
 const providers = [
