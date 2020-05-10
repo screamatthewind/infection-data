@@ -166,16 +166,19 @@ export class DailiesComponent implements OnInit {
 
   calculateMovingAverage(source: Chart, dest: Chart) {
 
-    for (var o = 0; o < source.data.length; o++) {
+    for (var o = 0; o < source.data.length + 3; o++) {
 
       var sum = 0;
       var numValues = 0;
+      var index = 0;
 
       for (var i = 0; i < 7; i++)
       {
-        if ((o + i) < source.data.length)
+        index = (o + i) - 3;
+      
+        if ((index => 0) && (index < source.data.length))
         {
-          sum += source.data[o + i];
+          sum += source.data[index];
           numValues++;
         }
       }

@@ -62,6 +62,7 @@ namespace InfectionData.Controllers
             favoriteRegions.Add("Florida");
             favoriteRegions.Add("Georgia USA");
             favoriteRegions.Add("Maryland");
+            favoriteRegions.Add("New York");
             favoriteRegions.Add("Ohio");
             favoriteRegions.Add("Tennessee");
             favoriteRegions.Add("South Korea");
