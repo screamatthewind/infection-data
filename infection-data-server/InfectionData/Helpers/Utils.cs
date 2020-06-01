@@ -154,7 +154,7 @@ namespace InfectionData.Helpers
 
                 Console.WriteLine("Downloading file from source: " + keyFilename);
 
-                HttpResponseMessage response = client.GetAsync("http://hgis.uw.edu/virus/assets/virus.csv").Result;
+                HttpResponseMessage response = client.GetAsync("https://hgis.uw.edu/virus/assets/virus.csv").Result;
                 response.EnsureSuccessStatusCode();
 
                 using (FileStream fileStream = new FileStream(destFilename, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
